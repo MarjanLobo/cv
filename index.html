@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mariano Loboda - Pastel System CV</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-page: #f8f9fa;
+            --card-white: #ffffff;
+            --card-dimmed: #f1f3f5; /* Gris muy suave para apagado */
+            --text-main: #1a1a1a;
+            --text-dimmed: #adb5bd; /* Texto más suave para inactivos */
+            
+            /* YELLOW PASTELS (Top Row) */
+            --yellow-1: #fff3b0; /* Portfolio */
+            --yellow-2: #fff8d6; /* Contact */
+
+            /* BLUE PASTELS (Experiences: Current to Oldest) */
+            --blue-1: #cce0ff; /* R/GA */
+            --blue-2: #dfe9ff; /* Hospital */
+            --blue-3: #eef3ff; /* Micó */
+            --blue-4: #f7f9ff; /* Mindcircus */
+
+            /* GREEN PASTELS (Bottom Row) */
+            --green-1: #ccebce; /* Software */
+            --green-2: #dcf2de; /* AI Tools */
+            --green-3: #ebfaed; /* Education */
+            --green-4: #f5fcf5; /* Languages */
+
+            --fluid-ease: cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-speed: 0.7s;
+            
+            /* Row Heights */
+            --row-h-sm: 130px;
+            --row-h-md: 260px;
+            --row-h-lg: 320px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            padding: 50px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .row {
+            display: flex;
+            gap: 15px;
+            transition: height var(--transition-speed) var(--fluid-ease);
+            height: var(--row-h-sm);
+        }
+
+        .card {
+            background-color: var(--card-white);
+            border-radius: 28px;
+            padding: 30px;
+            flex: 1;
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.04);
+            display: flex;
+            flex-direction: column;
+            transition: flex var(--transition-speed) var(--fluid-ease), 
+                        background-color var(--transition-speed) var(--fluid-ease),
+                        color var(--transition-speed) var(--fluid-ease),
+                        opacity var(--transition-speed) var(--fluid-ease),
+                        border-color var(--transition-speed) var(--fluid-ease);
+        }
+
+        /* --- EFECTO DIMMING (Excluyendo la tarjeta del nombre) --- */
+        .container:has(.card:not(.no-hover):hover) .card:not(:hover):not(.name-card) {
+            background-color: var(--card-dimmed);
+            color: var(--text-dimmed);
+            border-color: transparent;
+        }
+        
+        .container:has(.card:not(.no-hover):hover) .card:not(:hover):not(.name-card) h3,
+        .container:has(.card:not(.no-hover):hover) .card:not(:hover):not(.name-card) .title-tag,
+        .container:has(.card:not(.no-hover):hover) .card:not(:hover):not(.name-card) p,
+        .container:has(.card:not(.no-hover):hover) .card:not(:hover):not(.name-card) .date-tag {
+            color: var(--text-dimmed);
+            opacity: 1; /* Override internal opacity changes so they don't disappear */
+        }
+
+        /* --- LOGICA DE EXPANSION --- */
+        .row:hover .card:not(.no-hover) { flex: 0.5; }
+        .row .card:not(.no-hover):hover { flex: 2.5; color: var(--text-main); }
+
+        /* Heights */
+        .row-rga:hover { height: var(--row-h-md); }
+        .row-history:hover { height: var(--row-h-lg); }
+        .row-skills:hover { height: var(--row-h-lg); }
+
+        /* Header Fix */
+        .row-header { height: 140px; }
+        .name-card { 
+            flex: 0 0 450px !important; 
+            background: none !important; 
+            border: none !important; 
+            padding-left: 0; 
+            pointer-events: none; 
+            justify-content: center; 
+            color: var(--text-main) !important; /* Blindado */
+        }
+
+        /* --- COLORES PASTEL POR TEMA (Hover States) --- */
+        .portfolio-card:hover { background-color: var(--yellow-1) !important; }
+        .contact-card:hover { background-color: var(--yellow-2) !important; }
+        
+        .rga-card:hover { background-color: var(--blue-1) !important; }
+        .hosp-card:hover { background-color: var(--blue-2) !important; }
+        .mico-card:hover { background-color: var(--blue-3) !important; }
+        .mind-card:hover { background-color: var(--blue-4) !important; } 
+
+        .soft-card:hover { background-color: var(--green-1) !important; }
+        .ai-card:hover { background-color: var(--green-2) !important; }
+        .edu-card:hover { background-color: var(--green-3) !important; }
+        .lang-card:hover { background-color: var(--green-4) !important; }
+
+        /* Content revealing */
+        .details { opacity: 0; transition: opacity 0.4s var(--fluid-ease); margin-top: 15px; display: none; }
+        .card:hover .details { display: block; opacity: 1; }
+
+        /* Typography */
+        h1 { font-size: 2.6rem; font-weight: 800; letter-spacing: -2px; white-space: nowrap; line-height: 1; }
+        h2 { font-size: 1.1rem; font-weight: 400; color: var(--text-dim); margin-top: 5px; }
+        h3 { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; color: var(--text-dim); margin-bottom: 5px; }
+        
+        /* Ajustes tipográficos para estado hover */
+        .card:hover h3 { color: rgba(0,0,0,0.4); }
+        
+        .title-tag { font-size: 1.25rem; font-weight: 700; line-height: 1.1; }
+        .date-tag { font-size: 0.8rem; font-weight: 800; opacity: 0.5; margin-bottom: 10px; display: block; }
+        
+        ul { list-style: none; margin-top: 10px; }
+        li { font-size: 0.92rem; line-height: 1.45; margin-bottom: 8px; padding-left: 18px; position: relative; }
+        li::before { content: "→"; position: absolute; left: 0; opacity: 0.3; }
+
+        a { color: inherit; text-decoration: none; font-weight: 700; border-bottom: 2px solid rgba(0,0,0,0.1); }
+        a:hover { border-bottom-color: var(--text-main); }
+
+        @media (max-width: 900px) {
+            .row { flex-direction: column; height: auto !important; }
+            .name-card { flex: none !important; width: 100%; white-space: normal; }
+            .card { flex: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <div class="row row-header">
+            <div class="card name-card no-hover">
+                <h1>MARIANO LOBODA</h1>
+                <h2>Motion Design Director</h2>
+            </div>
+            <div class="card portfolio-card">
+                <h3>Portfolio</h3>
+                <div class="details">
+                    <a href="https://marianoloboda.myportfolio.com/work" target="_blank">marianoloboda.myportfolio.com ↗</a>
+                </div>
+            </div>
+            <div class="card contact-card">
+                <h3>Contact</h3>
+                <div class="details">
+                    <p style="font-weight: 700; font-size: 0.95rem;">mal_101087@hotmail.com</p>
+                    <p style="font-size: 0.9rem; margin-top: 8px;">+54 11 2880 1900</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row row-rga">
+            <div class="card rga-card">
+                <h3>Current Experience</h3>
+                <span class="title-tag">Motion Design Director | R/GA</span>
+                <div class="details">
+                    <span class="date-tag">2021 – PRESENT</span>
+                    <ul>
+                        <li>Direct audiovisual projects and manage a team of 2 motion designers, overseeing creative and technical processes.</li>
+                        <li>Execute motion graphics for global clients: Google, Verizon, PayPal, Samsung, Nike, and Gatorade.</li>
+                        <li>Integrate AI tools and Gemini (Vibe Coding) to build expressions and templates, accelerating delivery cycles.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="row row-history">
+            <div class="card hosp-card">
+                <h3>Past Experience</h3>
+                <span class="title-tag">Animator</span>
+                <p style="font-size: 0.85rem; opacity: 0.6; margin-top: 5px;">Hospital Italiano</p>
+                <div class="details">
+                    <span class="date-tag">2019 – 2021</span>
+                    <ul>
+                        <li>Animated health explainer videos and character rigging from storyboard to final render.</li>
+                        <li>Operated cameras inside operating rooms for live surgical broadcasts.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card mico-card">
+                <h3>Past Experience</h3>
+                <span class="title-tag">Video Editor</span>
+                <p style="font-size: 0.85rem; opacity: 0.6; margin-top: 5px;">Micó & Asoc.</p>
+                <div class="details">
+                    <span class="date-tag">2016 – 2019</span>
+                    <ul>
+                        <li>Animated TV commercials for IRSA and managed technical media delivery formats.</li>
+                        <li>Coded HTML/CSS web banners and covered institutional video shoots.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card mind-card">
+                <h3>Past Experience</h3>
+                <span class="title-tag">Audiovisual Designer</span>
+                <p style="font-size: 0.85rem; opacity: 0.6; margin-top: 5px;">Mindcircus</p>
+                <div class="details">
+                    <span class="date-tag">2016</span>
+                    <ul>
+                        <li>Social media content creation for brands including La Cabrera, Mimo, and Veritas.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="row row-skills">
+            <div class="card soft-card">
+                <h3>Software</h3>
+                <div class="details">
+                    <ul>
+                        <li>After Effects</li>
+                        <li>Cinema 4D</li>
+                        <li>Blender</li>
+                        <li>Premiere Pro</li>
+                        <li>Photoshop</li>
+                        <li>Illustrator</li>
+                        <li>Figma</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card ai-card">
+                <h3>AI Tools</h3>
+                <div class="details">
+                    <ul>
+                        <li>Midjourney</li>
+                        <li>Runway</li>
+                        <li>Freepik</li>
+                        <li>Gemini</li>
+                        <li>ChatGPT</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card edu-card">
+                <h3>Education</h3>
+                <div class="details">
+                    <p style="font-weight: 700; font-size: 1rem;">Image and Sound Designer</p>
+                    <p style="font-size: 0.85rem; opacity: 0.7; margin-top: 8px;">FADU - UBA, 2015</p>
+                </div>
+            </div>
+            <div class="card lang-card">
+                <h3>Languages</h3>
+                <div class="details">
+                    <ul>
+                        <li>Slovenian: Native</li>
+                        <li>Spanish: Native</li>
+                        <li>English: Advanced</li>
+                        <li>German: Basic</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
